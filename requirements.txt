@@ -31,10 +31,12 @@ dash-bootstrap-components==1.5.0
 
 # Database
 sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
 
 # Configuration and environment
 python-dotenv==1.0.0
 pydantic==2.5.0
+pydantic-settings==2.1.0
 
 # Async and concurrency
 aiofiles==23.2.1
