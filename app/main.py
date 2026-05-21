@@ -15,6 +15,7 @@ from app.core.volatility import VolatilityPredictor
 from app.core.price_feeds import price_feed_service
 from app.api.routes import router as api_router
 from app.api.websocket import WebSocketManager
+from app.api.seed import router as seed_router
 
 
 blockchain_monitor = BlockchainMonitor()
@@ -66,6 +67,7 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix="/api/v1")
+app.include_router(seed_router, prefix="/api/v1")
 
 
 @app.get("/")
