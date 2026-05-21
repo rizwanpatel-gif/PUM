@@ -77,7 +77,6 @@ def seed_demo_data():
                 if not upg:
                     upg = ProtocolUpgrade(
                         protocol_id=proto.id,
-                        protocol_name=proto.name,
                         upgrade_type=upg_types[j % len(upg_types)],
                         title=title,
                         description=f"Demo upgrade: {title}",
