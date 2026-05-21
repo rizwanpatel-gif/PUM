@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue'
 import { useDashboardStore } from '../stores/dashboard.js'
 import { storeToRefs } from 'pinia'
 import EventFeed from './EventFeed.vue'
@@ -9,9 +8,9 @@ const store = useDashboardStore()
 const { networkEvents, prices } = storeToRefs(store)
 
 const networks = [
-  { key: 'ethereum', label: 'ETHEREUM',  ticker: 'ETH',   id: 'ethereum' },
-  { key: 'polygon',  label: 'POLYGON',   ticker: 'MATIC',  id: 'matic-network' },
-  { key: 'arbitrum', label: 'ARBITRUM',  ticker: 'ARB',    id: 'arbitrum' },
+  { key: 'ethereum', label: 'Ethereum',  ticker: 'ETH',  id: 'ethereum',    color: '#627EEA' },
+  { key: 'polygon',  label: 'Polygon',   ticker: 'MATIC', id: 'matic-network', color: '#8247E5' },
+  { key: 'arbitrum', label: 'Arbitrum',  ticker: 'ARB',  id: 'arbitrum',    color: '#28A0F0' },
 ]
 
 function eventCount(net) {
@@ -19,41 +18,43 @@ function eventCount(net) {
 }
 
 function getPrice(id) {
-  const p = prices.value[id]
-  if (!p) return null
-  return p
+  return prices.value[id] ?? null
 }
 </script>
 
 <template>
   <div class="net-panel">
-    <div class="section-title">Network Status</div>
+    <div class="panel-header">
+      <span class="section-title" style="margin-bottom:0">Network Status</span>
+      <span class="badge badge-teal">Live</span>
+    </div>
 
     <!-- Network cards -->
     <div class="net-cards">
-      <div
-        v-for="net in networks"
-        :key="net.key"
-        class="net-card"
-      >
-        <div class="net-header">
-          <span class="dot-live"></span>
-          <span class="net-label">{{ net.label }}</span>
-          <span class="badge badge-neon">LIVE</span>
-        </div>
-        <div class="net-stats">
-          <div class="stat">
-            <span class="label">Events (24h)</span>
-            <span class="stat-val text-neon">{{ eventCount(net.key) }}</span>
+      <div v-for="net in networks" :key="net.key" class="net-card">
+        <div class="net-card-left">
+          <div class="net-icon" :style="{ background: net.color + '20', color: net.color }">
+            {{ net.ticker[0] }}
           </div>
-          <div class="stat" v-if="getPrice(net.id)">
-            <span class="label">Price</span>
-            <span class="stat-val" :class="getPrice(net.id).change_24h >= 0 ? 'price-up' : 'price-down'">
-              ${{ getPrice(net.id).price >= 1 ? getPrice(net.id).price.toFixed(2) : getPrice(net.id).price.toFixed(4) }}
-              <span style="font-size:9px">
-                {{ getPrice(net.id).change_24h >= 0 ? '+' : '' }}{{ getPrice(net.id).change_24h?.toFixed(2) }}%
-              </span>
-            </span>
+          <div class="net-info">
+            <div class="net-name">{{ net.label }}</div>
+            <div class="net-ticker">{{ net.ticker }}</div>
+          </div>
+        </div>
+        <div class="net-card-right">
+          <template v-if="getPrice(net.id)">
+            <div class="net-price" :class="getPrice(net.id).change_24h >= 0 ? 'price-up' : 'price-down'">
+              {{ getPrice(net.id).price >= 1
+                  ? `$${getPrice(net.id).price.toFixed(2)}`
+                  : `$${getPrice(net.id).price.toFixed(4)}` }}
+            </div>
+            <div class="net-change" :class="getPrice(net.id).change_24h >= 0 ? 'price-up' : 'price-down'">
+              {{ getPrice(net.id).change_24h >= 0 ? '+' : '' }}{{ getPrice(net.id).change_24h?.toFixed(2) }}%
+            </div>
+          </template>
+          <div class="event-count">
+            <span class="label">Events</span>
+            <span class="count-val">{{ eventCount(net.key) }}</span>
           </div>
         </div>
       </div>
@@ -61,26 +62,60 @@ function getPrice(id) {
 
     <hr class="divider" />
 
-    <!-- Prices -->
-    <div class="section-title" style="margin-top:8px">Protocol Prices</div>
+    <div class="section-title">Protocol Prices</div>
     <PricesFeed />
 
     <hr class="divider" />
 
-    <!-- Event feed -->
     <div class="section-title">Live Events</div>
     <EventFeed />
   </div>
 </template>
 
 <style scoped>
-.net-panel { display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
+.net-panel { display: flex; flex-direction: column; }
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
 .net-cards { display: flex; flex-direction: column; gap: 8px; }
-.net-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 4px; padding: 10px 12px; transition: border-color 0.2s; }
-.net-card:hover { border-color: #00FF41; box-shadow: 0 0 10px rgba(0,255,65,0.1); }
-.net-header { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
-.net-label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: #E5E7EB; flex: 1; }
-.net-stats { display: flex; gap: 20px; }
-.stat { display: flex; flex-direction: column; gap: 2px; }
-.stat-val { font-size: 14px; font-weight: 700; }
+
+.net-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.net-card:hover { border-color: var(--border2); background: var(--hover); }
+
+.net-card-left { display: flex; align-items: center; gap: 10px; }
+
+.net-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.net-name { font-size: 14px; font-weight: 700; color: var(--text1); }
+.net-ticker { font-size: 12px; font-weight: 500; color: var(--text2); margin-top: 1px; }
+
+.net-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.net-price { font-size: 16px; font-weight: 800; }
+.net-change { font-size: 12px; font-weight: 600; }
+.event-count { display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+.count-val { font-size: 13px; font-weight: 700; color: var(--accent); }
 </style>

@@ -61,23 +61,23 @@ NETWORKS = {
         "rpc_url": settings.ethereum_rpc_url,
         "explorer": "https://etherscan.io",
         "api_key": settings.etherscan_api_key,
-        "api_base": "https://api.etherscan.io/api"
+        "api_base": "https://api.etherscan.io/v2/api",
     },
     "polygon": {
         "name": "Polygon",
         "chain_id": 137,
         "rpc_url": settings.polygon_rpc_url,
         "explorer": "https://polygonscan.com",
-        "api_key": settings.polygonscan_api_key,
-        "api_base": "https://api.polygonscan.com/api"
+        "api_key": settings.etherscan_api_key,   # Etherscan V2 covers all chains
+        "api_base": "https://api.etherscan.io/v2/api",
     },
     "arbitrum": {
         "name": "Arbitrum",
         "chain_id": 42161,
         "rpc_url": settings.arbitrum_rpc_url,
         "explorer": "https://arbiscan.io",
-        "api_key": settings.arbiscan_api_key,
-        "api_base": "https://api.arbiscan.io/api"
+        "api_key": settings.etherscan_api_key,   # Etherscan V2 covers all chains
+        "api_base": "https://api.etherscan.io/v2/api",
     }
 }
 

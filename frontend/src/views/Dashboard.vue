@@ -30,56 +30,55 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="dashboard">
+  <div class="app-layout">
     <HackerHeader />
     <div class="panel-grid">
-      <div class="panel">
-        <NetworkPanel />
-      </div>
-      <div class="panel panel-center">
-        <RiskPanel />
-      </div>
-      <div class="panel">
-        <ExecutionPanel />
-      </div>
+      <div class="panel-col"><NetworkPanel /></div>
+      <div class="panel-col panel-col--accent"><RiskPanel /></div>
+      <div class="panel-col"><ExecutionPanel /></div>
     </div>
-    <footer class="footer">
-      <span class="text-dim" style="font-size:10px; letter-spacing:0.1em;">
-        PUM — PROTOCOL UPGRADE MONITOR &nbsp;|&nbsp; FastAPI :8000 &nbsp;|&nbsp; Vue :5173 &nbsp;|&nbsp; ETH / MATIC / ARB
-      </span>
-    </footer>
   </div>
 </template>
 
 <style scoped>
-.dashboard { display: flex; flex-direction: column; min-height: 100vh; background: #000; }
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+}
 
 .panel-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  padding: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 16px 20px 20px;
+  align-items: start;
   flex: 1;
 }
 
-.panel {
-  background: #0a0a0a;
-  border: 1px solid #1a1a1a;
-  border-radius: 4px;
-  padding: 14px;
+.panel-col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 20px 18px;
   overflow-y: auto;
-  max-height: calc(100vh - 90px);
+  max-height: calc(100vh - 76px);
 }
 
-.panel-center {
-  border-color: rgba(0, 255, 65, 0.2);
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
+.panel-col--accent {
+  border-color: rgba(0, 201, 167, 0.2);
+  box-shadow: 0 0 40px rgba(0, 201, 167, 0.04) inset;
 }
 
-.footer {
-  border-top: 1px solid #1a1a1a;
-  padding: 6px 16px;
-  text-align: center;
-  background: #000;
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .panel-grid { grid-template-columns: 1fr 1fr; }
+  .panel-col  { max-height: none; }
+}
+
+@media (max-width: 680px) {
+  .panel-grid { grid-template-columns: 1fr; padding: 10px 12px; gap: 10px; }
+  .panel-col  { max-height: none; }
 }
 </style>

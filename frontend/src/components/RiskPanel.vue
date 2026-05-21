@@ -6,10 +6,9 @@ import { storeToRefs } from 'pinia'
 const store = useDashboardStore()
 const { riskScores, recentUpgrades, avgRisk, riskLevel } = storeToRefs(store)
 
-// ECharts gauge option
 const gaugeOption = computed(() => {
   const val = avgRisk.value
-  const color = val >= 70 ? '#FF0040' : val >= 40 ? '#FFB800' : '#00FF41'
+  const color = val >= 70 ? '#ef4444' : val >= 40 ? '#f59e0b' : '#00c9a7'
   return {
     backgroundColor: 'transparent',
     series: [{
@@ -18,47 +17,43 @@ const gaugeOption = computed(() => {
       endAngle: -20,
       min: 0,
       max: 100,
-      radius: '85%',
+      radius: '88%',
       center: ['50%', '60%'],
       axisLine: {
         lineStyle: {
-          width: 14,
-          color: [
-            [0.3, '#00FF41'],
-            [0.7, '#FFB800'],
-            [1,   '#FF0040'],
-          ],
+          width: 12,
+          color: [[0.3, '#00c9a7'], [0.7, '#f59e0b'], [1, '#ef4444']],
         },
       },
       pointer: {
         itemStyle: { color },
         length: '60%',
-        width: 5,
+        width: 4,
       },
       axisTick: { show: false },
       splitLine: { show: false },
       axisLabel: {
-        color: '#555',
+        color: '#7070a0',
         fontSize: 9,
-        distance: 18,
+        distance: 16,
+        fontFamily: 'Plus Jakarta Sans',
         formatter: (v) => v === 0 ? '0' : v === 50 ? '50' : v === 100 ? '100' : '',
       },
       detail: {
         valueAnimation: true,
         formatter: '{value}',
         color,
-        fontSize: 28,
+        fontSize: 30,
         fontWeight: 700,
-        fontFamily: 'JetBrains Mono',
-        offsetCenter: [0, '15%'],
+        fontFamily: 'Plus Jakarta Sans',
+        offsetCenter: [0, '12%'],
       },
       data: [{ value: Math.round(val), name: 'RISK SCORE' }],
-      title: { color: '#555', fontSize: 10, fontFamily: 'JetBrains Mono', offsetCenter: [0, '35%'] },
+      title: { color: '#7070a0', fontSize: 10, fontFamily: 'Plus Jakarta Sans', offsetCenter: [0, '34%'] },
     }],
   }
 })
 
-// Sparkline
 const sparkOption = computed(() => ({
   backgroundColor: 'transparent',
   grid: { top: 4, bottom: 4, left: 4, right: 4 },
@@ -68,33 +63,53 @@ const sparkOption = computed(() => ({
     type: 'line',
     data: [...riskScores.value].reverse(),
     smooth: true,
-    lineStyle: { color: '#00FF41', width: 2 },
+    lineStyle: { color: '#00c9a7', width: 2 },
     itemStyle: { opacity: 0 },
-    areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(0,255,65,0.2)' }, { offset: 1, color: 'transparent' }] } },
+    areaStyle: {
+      color: {
+        type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+        colorStops: [
+          { offset: 0, color: 'rgba(0,201,167,0.25)' },
+          { offset: 1, color: 'rgba(0,201,167,0)' },
+        ],
+      },
+    },
   }],
-  tooltip: { trigger: 'axis', backgroundColor: '#0a0a0a', borderColor: '#1a1a1a', textStyle: { color: '#E5E7EB', fontSize: 10, fontFamily: 'JetBrains Mono' } },
+  tooltip: {
+    trigger: 'axis',
+    backgroundColor: '#181826',
+    borderColor: '#1e1e2e',
+    textStyle: { color: '#e4e4f0', fontSize: 11, fontFamily: 'Inter' },
+  },
 }))
 
-// Pie breakdown
 const pieOption = computed(() => {
   const low    = riskScores.value.filter(r => r < 30).length
   const medium = riskScores.value.filter(r => r >= 30 && r < 70).length
   const high   = riskScores.value.filter(r => r >= 70).length
   return {
     backgroundColor: 'transparent',
-    tooltip: { trigger: 'item', backgroundColor: '#0a0a0a', borderColor: '#1a1a1a', textStyle: { color: '#E5E7EB', fontSize: 10, fontFamily: 'JetBrains Mono' } },
-    legend: { bottom: 4, textStyle: { color: '#555', fontSize: 9, fontFamily: 'JetBrains Mono' } },
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: '#181826',
+      borderColor: '#1e1e2e',
+      textStyle: { color: '#e4e4f0', fontSize: 11, fontFamily: 'Inter' },
+    },
+    legend: {
+      bottom: 4,
+      textStyle: { color: '#7070a0', fontSize: 10, fontFamily: 'Inter' },
+    },
     series: [{
       type: 'pie',
-      radius: ['42%', '68%'],
-      center: ['50%', '45%'],
+      radius: ['44%', '68%'],
+      center: ['50%', '46%'],
       data: [
-        { value: low,    name: 'LOW',      itemStyle: { color: '#00FF41' } },
-        { value: medium, name: 'MEDIUM',   itemStyle: { color: '#FFB800' } },
-        { value: high,   name: 'CRITICAL', itemStyle: { color: '#FF0040' } },
+        { value: low,    name: 'Low',      itemStyle: { color: '#00c9a7' } },
+        { value: medium, name: 'Medium',   itemStyle: { color: '#f59e0b' } },
+        { value: high,   name: 'Critical', itemStyle: { color: '#ef4444' } },
       ],
       label: { show: false },
-      emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.5)' } },
+      emphasis: { itemStyle: { shadowBlur: 8, shadowColor: 'rgba(0,0,0,0.4)' } },
     }],
   }
 })
@@ -102,7 +117,7 @@ const pieOption = computed(() => {
 function badgeClass(status) {
   if (!status) return 'badge-dim'
   const s = status.toLowerCase()
-  if (s.includes('active') || s.includes('approved')) return 'badge-neon'
+  if (s.includes('active') || s.includes('approved')) return 'badge-teal'
   if (s.includes('pending') || s.includes('voting'))  return 'badge-amber'
   if (s.includes('failed') || s.includes('reject'))   return 'badge-red'
   return 'badge-dim'
@@ -114,25 +129,33 @@ function badgeClass(status) {
     <div class="section-title">Risk Assessment</div>
 
     <!-- Gauge -->
-    <div class="card-neon scanlines" style="padding:10px; margin-bottom:10px;">
-      <v-chart :option="gaugeOption" style="height:200px;" autoresize />
-      <div style="text-align:center; margin-top:-8px;">
-        <span class="badge" :class="riskLevel === 'CRITICAL' ? 'badge-red' : riskLevel === 'ELEVATED' ? 'badge-amber' : 'badge-neon'">
+    <div class="card-accent gauge-card" style="margin-bottom:10px;">
+      <v-chart :option="gaugeOption" style="height:190px;" autoresize />
+      <div class="gauge-badge">
+        <span
+          class="badge"
+          :class="riskLevel === 'CRITICAL' ? 'badge-red' : riskLevel === 'ELEVATED' ? 'badge-amber' : 'badge-teal'"
+        >
           {{ riskLevel }}
         </span>
       </div>
     </div>
 
     <!-- Sparkline -->
-    <div class="card" style="margin-bottom:10px;">
-      <div class="label" style="margin-bottom:4px;">Risk Over Time</div>
-      <v-chart :option="sparkOption" style="height:70px;" autoresize />
+    <div class="card spark-card" style="margin-bottom:10px;">
+      <div class="spark-label">
+        <span class="label">Risk Over Time</span>
+        <span class="spark-val" :class="avgRisk >= 70 ? 'text-negative' : avgRisk >= 40 ? 'text-warn' : 'text-accent'">
+          {{ avgRisk.toFixed(1) }}
+        </span>
+      </div>
+      <v-chart :option="sparkOption" style="height:64px;" autoresize />
     </div>
 
     <!-- Pie -->
-    <div class="card" style="margin-bottom:10px;">
-      <div class="label" style="margin-bottom:4px;">Distribution</div>
-      <v-chart :option="pieOption" style="height:160px;" autoresize />
+    <div class="card" style="margin-bottom:12px;">
+      <div class="label" style="margin-bottom:6px;">Risk Distribution</div>
+      <v-chart :option="pieOption" style="height:150px;" autoresize />
     </div>
 
     <!-- Recent upgrades -->
@@ -143,13 +166,13 @@ function badgeClass(status) {
         :key="i"
         class="upgrade-row fade-in"
       >
-        <div class="upgrade-header">
-          <span class="upgrade-name">{{ up.protocol_name || 'Unknown' }}</span>
-          <span class="badge" :class="badgeClass(up.status)">{{ up.status || 'N/A' }}</span>
+        <div class="upgrade-left">
+          <div class="upgrade-name">{{ up.protocol_name || 'Unknown' }}</div>
+          <div class="upgrade-title">{{ up.title || 'No title' }}</div>
         </div>
-        <div class="upgrade-title">{{ up.title || 'No title' }}</div>
+        <span class="badge" :class="badgeClass(up.status)">{{ up.status || 'N/A' }}</span>
       </div>
-      <div v-if="!recentUpgrades.length" class="text-dim" style="font-size:11px; padding:6px 0;">
+      <div v-if="!recentUpgrades.length" class="empty-state">
         No upgrades found<span class="blink">_</span>
       </div>
     </div>
@@ -157,11 +180,31 @@ function badgeClass(status) {
 </template>
 
 <style scoped>
-.risk-panel { display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
+.risk-panel { display: flex; flex-direction: column; }
+
+.gauge-card { padding: 8px 10px 10px; }
+.gauge-badge { text-align: center; margin-top: -6px; }
+
+.spark-card { padding: 12px 14px 10px; }
+.spark-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.spark-val { font-size: 15px; font-weight: 700; }
+
 .upgrade-list { display: flex; flex-direction: column; gap: 6px; }
-.upgrade-row { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 4px; padding: 8px 10px; transition: border-color 0.2s; }
-.upgrade-row:hover { border-color: #1f1f1f; }
-.upgrade-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
-.upgrade-name { font-size: 12px; font-weight: 700; color: #E5E7EB; letter-spacing: 0.05em; }
-.upgrade-title { font-size: 10px; color: #6B7280; }
+.upgrade-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  gap: 10px;
+  transition: border-color 0.15s;
+}
+.upgrade-row:hover { border-color: var(--border2); }
+.upgrade-left { flex: 1; min-width: 0; }
+.upgrade-name { font-size: 13px; font-weight: 700; color: var(--text1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.upgrade-title { font-size: 12px; font-weight: 400; color: var(--text2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.empty-state { font-size: 13px; color: var(--text3); padding: 8px 0; }
 </style>
