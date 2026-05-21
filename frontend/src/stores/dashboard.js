@@ -62,10 +62,15 @@ export const useDashboardStore = defineStore('dashboard', {
     connectWS() {
       // In dev: proxy handles ws → localhost:8000
       // In prod: VITE_WS_URL=wss://your-app.railway.app/ws
-      const wsUrl = import.meta.env.VITE_WS_URL || (() => {
-        const proto = location.protocol === 'https:' ? 'wss' : 'ws'
-        return `${proto}://${location.host}/ws`
-      })()
+      const apiBase = import.meta.env.VITE_API_URL || ''
+      const wsUrl = import.meta.env.VITE_WS_URL ||
+        (apiBase
+          ? apiBase.replace(/^http/, 'ws').replace(/\/api\/v1\/?$/, '') + '/ws'
+          : (() => {
+              const proto = location.protocol === 'https:' ? 'wss' : 'ws'
+              return `${proto}://${location.host}/ws`
+            })()
+        )
       const ws = new WebSocket(wsUrl)
       ws.onopen  = () => { this.wsConnected = true }
       ws.onclose = () => { this.wsConnected = false; setTimeout(() => this.connectWS(), 5000) }

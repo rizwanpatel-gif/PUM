@@ -6,9 +6,15 @@ const store = useDashboardStore()
 const { prices } = storeToRefs(store)
 
 const tokenMeta = {
-  ethereum:     { name: 'Ethereum',  ticker: 'ETH',  color: '#627EEA', initial: 'E' },
+  aave:     { name: 'Aave',     ticker: 'AAVE', color: '#B6509E', initial: 'A' },
+  uniswap:  { name: 'Uniswap',  ticker: 'UNI',  color: '#FF007A', initial: 'U' },
+  compound: { name: 'Compound', ticker: 'COMP', color: '#00D395', initial: 'C' },
+  curve:    { name: 'Curve',    ticker: 'CRV',  color: '#FFD700', initial: 'C' },
+  balancer: { name: 'Balancer', ticker: 'BAL',  color: '#1E1E1E', initial: 'B' },
+  rari:     { name: 'Rari',     ticker: 'RARI', color: '#6C5CE7', initial: 'R' },
+  ethereum: { name: 'Ethereum', ticker: 'ETH',  color: '#627EEA', initial: 'E' },
   'matic-network': { name: 'Polygon', ticker: 'MATIC', color: '#8247E5', initial: 'M' },
-  arbitrum:     { name: 'Arbitrum', ticker: 'ARB',  color: '#28A0F0', initial: 'A' },
+  arbitrum: { name: 'Arbitrum', ticker: 'ARB',  color: '#28A0F0', initial: 'A' },
 }
 
 function getMeta(id) {
