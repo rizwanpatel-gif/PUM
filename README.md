@@ -65,7 +65,7 @@ cp .env.example .env            # fill in your API keys
 
 python -c "from app.database.database import init_db; init_db()"
 
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 **2. Frontend**

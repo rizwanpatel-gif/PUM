@@ -23,7 +23,7 @@ class WebSocketManager:
         self.subscriptions[websocket] = []
         logger.info(f"WebSocket connected. Total connections: {len(self.active_connections)}")
         
-        # Send welcome message
+    
         await self.send_personal_message(websocket, {
             "type": "connection",
             "message": "Connected to Protocol Upgrade Monitor",
