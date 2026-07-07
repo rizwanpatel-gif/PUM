@@ -117,7 +117,7 @@ function sentimentColor(s) {
     <div class="section-title">Execution Guidance</div>
 
     <!-- Volatility chart -->
-    <div class="card-accent" style="margin-bottom:12px; padding:12px 14px;">
+    <div id="tour-volatility" class="card-accent" style="margin-bottom:12px; padding:12px 14px;">
       <div class="label" style="margin-bottom:8px;">Predicted Volatility</div>
       <v-chart :option="volOption" style="height:150px;" autoresize />
     </div>
@@ -158,7 +158,7 @@ function sentimentColor(s) {
 
     <!-- Trading signals -->
     <div class="section-title">Trading Signals</div>
-    <div class="recs-list" style="margin-bottom:12px;">
+    <div id="tour-signals" class="recs-list" style="margin-bottom:12px;">
       <div
         v-for="(rec, i) in tradingRecs.slice(0, 4)"
         :key="i"
@@ -177,7 +177,7 @@ function sentimentColor(s) {
 
     <!-- Sentiment -->
     <div class="section-title">Sentiment Analysis</div>
-    <div class="card" style="margin-bottom:12px;">
+    <div id="tour-sentiment" class="card" style="margin-bottom:12px;">
       <div class="input-row">
         <input
           v-model="sentimentText"

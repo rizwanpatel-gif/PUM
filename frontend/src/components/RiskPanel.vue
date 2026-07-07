@@ -129,7 +129,7 @@ function badgeClass(status) {
     <div class="section-title">Risk Assessment</div>
 
     <!-- Gauge -->
-    <div class="card-accent gauge-card" style="margin-bottom:10px;">
+    <div id="tour-risk-gauge" class="card-accent gauge-card" style="margin-bottom:10px;">
       <v-chart :option="gaugeOption" style="height:190px;" autoresize />
       <div class="gauge-badge">
         <span
@@ -142,7 +142,7 @@ function badgeClass(status) {
     </div>
 
     <!-- Sparkline -->
-    <div class="card spark-card" style="margin-bottom:10px;">
+    <div id="tour-risk-chart" class="card spark-card" style="margin-bottom:10px;">
       <div class="spark-label">
         <span class="label">Risk Over Time</span>
         <span class="spark-val" :class="avgRisk >= 70 ? 'text-negative' : avgRisk >= 40 ? 'text-warn' : 'text-accent'">
@@ -153,14 +153,14 @@ function badgeClass(status) {
     </div>
 
     <!-- Pie -->
-    <div class="card" style="margin-bottom:12px;">
+    <div id="tour-risk-dist" class="card" style="margin-bottom:12px;">
       <div class="label" style="margin-bottom:6px;">Risk Distribution</div>
       <v-chart :option="pieOption" style="height:150px;" autoresize />
     </div>
 
     <!-- Recent upgrades -->
     <div class="section-title">Recent Upgrades</div>
-    <div class="upgrade-list">
+    <div id="tour-upgrades" class="upgrade-list">
       <div
         v-for="(up, i) in recentUpgrades.slice(0, 5)"
         :key="i"

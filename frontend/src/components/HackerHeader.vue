@@ -3,6 +3,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useDashboardStore } from '../stores/dashboard.js'
 import { storeToRefs } from 'pinia'
 
+const emit = defineEmits(['start-tour'])
+
 const store = useDashboardStore()
 const { riskLevel, avgRisk, wsConnected } = storeToRefs(store)
 
@@ -49,12 +51,14 @@ onUnmounted(() => clearInterval(timer))
         <span class="risk-num">{{ avgRisk.toFixed(0) }}</span>
       </div>
 
-      <div class="ws-pill" :class="wsConnected ? 'ws-live' : 'ws-off'">
+      <div id="tour-header" class="ws-pill" :class="wsConnected ? 'ws-live' : 'ws-off'">
         <span :class="wsConnected ? 'dot-live' : 'dot-dead'"></span>
         <span>{{ wsConnected ? 'Live' : 'Offline' }}</span>
       </div>
 
       <div class="clock">{{ clock }}</div>
+
+      <button class="help-btn" @click="emit('start-tour')" title="Start tour">?</button>
     </div>
   </header>
 </template>
@@ -140,5 +144,27 @@ onUnmounted(() => clearInterval(timer))
 @media (max-width: 600px) {
   .topbar { padding: 0 14px; }
   .page-sub { display: none; }
+}
+
+.help-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: var(--raised);
+  color: var(--text2);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.help-btn:hover {
+  background: var(--accent);
+  color: #0d0d15;
+  border-color: var(--accent);
 }
 </style>

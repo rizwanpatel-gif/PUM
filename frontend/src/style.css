@@ -184,3 +184,86 @@ body {
 @keyframes blink { 50% { opacity: 0; } }
 .blink { animation: blink 1s step-end infinite; }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* ── Tour Highlight ── */
+.tour-highlight {
+  outline: 2px solid #00c9a7 !important;
+  outline-offset: 4px !important;
+  border-radius: var(--r) !important;
+  box-shadow: 0 0 0 4px rgba(0, 201, 167, 0.15), 0 0 24px rgba(0, 201, 167, 0.2) !important;
+  transition: outline 0.2s, box-shadow 0.2s !important;
+  position: relative;
+  z-index: 9999;
+}
+
+/* ── Shepherd Tour Theme ── */
+.shepherd-element {
+  background: #12121c !important;
+  border: 1px solid #26263a !important;
+  border-radius: 14px !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6) !important;
+  max-width: 320px !important;
+}
+.shepherd-arrow::before { background: #12121c !important; }
+.shepherd-header {
+  background: #12121c !important;
+  border-bottom: 1px solid #1e1e2e !important;
+  border-radius: 14px 14px 0 0 !important;
+  padding: 14px 18px 12px !important;
+}
+.shepherd-title {
+  color: #eaeaf4 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+.shepherd-cancel-icon {
+  color: #7878a8 !important;
+  font-size: 18px !important;
+}
+.shepherd-cancel-icon:hover { color: #eaeaf4 !important; }
+.shepherd-text {
+  color: #7878a8 !important;
+  font-size: 13px !important;
+  line-height: 1.65 !important;
+  padding: 14px 18px !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+.shepherd-text b { color: #eaeaf4; }
+.shepherd-footer {
+  padding: 10px 18px 14px !important;
+  border-top: 1px solid #1e1e2e !important;
+  gap: 8px !important;
+}
+.shepherd-btn-next {
+  background: #00c9a7 !important;
+  color: #0d0d15 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+.shepherd-btn-next:hover { opacity: 0.85 !important; }
+.shepherd-btn-back {
+  background: #181826 !important;
+  color: #7878a8 !important;
+  border: 1px solid #1e1e2e !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+.shepherd-btn-back:hover { background: #1d1d2d !important; color: #eaeaf4 !important; }
+.shepherd-modal-overlay-container { fill: #0d0d15 !important; fill-opacity: 0.75 !important; }
+
+@media (max-width: 768px) {
+  .shepherd-element {
+    max-width: calc(100vw - 24px) !important;
+    width: calc(100vw - 24px) !important;
+  }
+}

@@ -30,7 +30,7 @@ function getPrice(id) {
     </div>
 
     <!-- Network cards -->
-    <div class="net-cards">
+    <div id="tour-networks" class="net-cards">
       <div v-for="net in networks" :key="net.key" class="net-card">
         <div class="net-card-left">
           <div class="net-icon" :style="{ background: net.color + '20', color: net.color }">
@@ -63,12 +63,12 @@ function getPrice(id) {
     <hr class="divider" />
 
     <div class="section-title">Protocol Prices</div>
-    <PricesFeed />
+    <div id="tour-prices"><PricesFeed /></div>
 
     <hr class="divider" />
 
     <div class="section-title">Live Events</div>
-    <EventFeed />
+    <div id="tour-events"><EventFeed /></div>
   </div>
 </template>
 

@@ -1,12 +1,14 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue'
 import { useDashboardStore } from '../stores/dashboard.js'
+import { useOnboarding } from '../composables/useOnboarding.js'
 import HackerHeader from '../components/HackerHeader.vue'
 import NetworkPanel from '../components/NetworkPanel.vue'
 import RiskPanel from '../components/RiskPanel.vue'
 import ExecutionPanel from '../components/ExecutionPanel.vue'
 
 const store = useDashboardStore()
+const { startTour, checkAutoStart } = useOnboarding()
 
 let pollTimer = null
 
@@ -22,6 +24,7 @@ onMounted(async () => {
   await refresh()
   store.connectWS()
   pollTimer = setInterval(refresh, 15000)
+  checkAutoStart()
 })
 
 onUnmounted(() => {
@@ -31,7 +34,7 @@ onUnmounted(() => {
 
 <template>
   <div class="app-layout">
-    <HackerHeader />
+    <HackerHeader @start-tour="startTour" />
     <div class="panel-grid">
       <div class="panel-col"><NetworkPanel /></div>
       <div class="panel-col panel-col--accent"><RiskPanel /></div>
